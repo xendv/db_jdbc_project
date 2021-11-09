@@ -24,6 +24,8 @@ public class MainApplication {
             // QueryManager check
 
             final QueryManager queryManager = new QueryManager(connection);
+            Date start = java.sql.Date.valueOf("1999-01-01");
+            Date end = java.sql.Date.valueOf("2000-01-01");
 
             System.out.println("\n get10ByProductsQuantity");
             queryManager.get10ByProductsQuantity().forEach(System.out::println);
@@ -34,9 +36,15 @@ public class MainApplication {
                                     put(new Product(222, "spoon"), Integer.valueOf(100));}}
             ).forEach(System.out::println);
 
+            System.out.println("\n getQuantityAndSumByPeriod");
+            queryManager.getQuantityAndSumByPeriod(start, end).forEach(
+                    (product, indicators) -> {
+                        System.out.print(product);
+                        System.out.println(" total_quantity = " + indicators.keySet().toArray()[0] +
+                                " total_cost = " + indicators.get(indicators.keySet().toArray()[0]));
+                    });
+
             System.out.println("\n getAvgPriceByPeriod");
-            Date start = java.sql.Date.valueOf("1999-01-01");
-            Date end = java.sql.Date.valueOf("2000-01-01");
             int product_id = 111;
             System.out.println("Interval start = " + start.toString() + ", Interval end = " + end.toString() +
                     ", product_id = " + product_id);

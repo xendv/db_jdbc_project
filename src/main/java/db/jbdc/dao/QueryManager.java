@@ -80,6 +80,39 @@ public class QueryManager {
         return result;
     }
 
+    // За каждый день для каждого товара рассчитать количество и сумму полученного товара
+    // в указанном периоде, посчитать итоги за период
+    @NotNull
+    public Map<Product,Map<Integer, Integer>> getQuantityAndSumByPeriod(Date start, Date end){
+        HashMap<Product,Map<Integer, Integer>> result = new HashMap<>();
+        String query = "SELECT product.internal_code, product.name,\n" +
+                "SUM(invoice_item.quantity) AS full_quantity,\n" +
+                "SUM(invoice_item.quantity * invoice_item.price) AS total_sum\n" +
+                "FROM product\n" +
+                "JOIN invoice_item ON invoice_item.product_code = product.internal_code\n" +
+                "JOIN invoice ON invoice.date >= ? AND invoice.date <= ?\n" +
+                "GROUP BY internal_code\n" +
+                "ORDER BY internal_code ASC";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setDate(1,start);
+            preparedStatement.setDate(2,end);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    HashMap<Integer, Integer> indicatorsHashMap = new HashMap(){{
+                            put(Integer.valueOf(resultSet.getInt("full_quantity")),
+                                    Integer.valueOf(resultSet.getInt("total_sum")));
+                    }};
+                    result.put(new Product(resultSet.getInt("internal_code"),
+                            resultSet.getString("name")), indicatorsHashMap);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+
+
     // Рассчитать среднюю цену полученного товара за период
     @NotNull
     public double getAvgPriceByPeriod(int inner_code, Date start, Date end){
