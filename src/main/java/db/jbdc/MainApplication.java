@@ -2,6 +2,7 @@ package db.jbdc;
 
 import db.jbdc.dao.QueryManager;
 import db.jbdc.entities.Organization;
+import db.jbdc.entities.Product;
 import db.jbdc.initializers.DBFlywayInitializer;
 import db.jbdc.initializers.JDBCSettingsProvider;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class MainApplication {
     public static final @NotNull
@@ -21,9 +23,16 @@ public class MainApplication {
 
             // QueryManager check
 
-            System.out.println("\n get10ByProductsQuantity");
             final QueryManager queryManager = new QueryManager(connection);
+
+            System.out.println("\n get10ByProductsQuantity");
             queryManager.get10ByProductsQuantity().forEach(System.out::println);
+
+            System.out.println("\n getOrganisationsWithProducts");
+            queryManager.getOrganisationsWithProducts(
+                    new HashMap(){{ put(new Product(111, "fork"), Integer.valueOf(200));
+                                    put(new Product(222, "spoon"), Integer.valueOf(100));}}
+            ).forEach(System.out::println);
 
             System.out.println("\n getAvgPriceByPeriod");
             Date start = java.sql.Date.valueOf("1999-01-01");

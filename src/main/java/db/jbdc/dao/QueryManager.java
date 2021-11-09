@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // класс с отчетами
 public class QueryManager {
@@ -40,6 +41,42 @@ public class QueryManager {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return result;
+    }
+
+    // Выбрать поставщиков с суммой поставленного товара выше указанного количества
+    // (товар и его количество должны допускать множественное указание).
+    // Реализован вариант 'OR'
+    @NotNull
+    public List<Organization> getOrganisationsWithProducts(Map<Product, Integer> productMap) {
+        ArrayList<Organization> result = new ArrayList<>();
+        productMap.forEach(
+                (product, quantity)->{
+                    String query = "SELECT itn, name, payment_account,\n" +
+                            "SUM(invoice_item.quantity) AS full_quantity\n" +
+                            "FROM organization\n" +
+                            "INNER JOIN invoice ON invoice.sender_org_itn=organization.itn\n" +
+                            "INNER JOIN invoice_item ON invoice_item.invoice_id = invoice.id\n" +
+                            "AND invoice_item.product_code = ?\n" +
+                            "group by itn, product_code\n" +
+                            "HAVING SUM(invoice_item.quantity) > ?";
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                        preparedStatement.setInt(1,product.getInternal_code());
+                        preparedStatement.setInt(2,quantity.intValue());
+                        try (var resultSet = preparedStatement.executeQuery()) {
+                            while (resultSet.next()) {
+                                Organization tempOrganization = new Organization
+                                        (resultSet.getInt("itn"),
+                                                resultSet.getString("name"),
+                                                resultSet.getString("payment_account"));
+                                if (!result.contains(tempOrganization)) result.add(tempOrganization);
+                            }
+                        }
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+        );
         return result;
     }
 
