@@ -29,25 +29,19 @@ dependencies {
     // db
     implementation("org.flywaydb:flyway-core:8.0.1")
     implementation("org.postgresql:postgresql:42.2.9")
-}
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+    // json
+    implementation("com.google.code.gson:gson:2.8.8")
 }
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"]="library.with.tests.Application";
+        attributes["Main-Class"]="db.jdbc.MainApplication"
     }
-    configurations["compileClasspath"].forEach { file: File ->
-        from(zipTree(file.absoluteFile))
-    }
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 task<JavaExec>("execute") {
-    /*mainClass.set("library.with.tests.Application");
+    mainClass.set("db.jdbc.MainApplication")
     classpath = java.sourceSets["main"].runtimeClasspath
-    args("./books.txt", "101")
-    standardInput = System.`in`*/
+    standardInput = System.`in`
 }

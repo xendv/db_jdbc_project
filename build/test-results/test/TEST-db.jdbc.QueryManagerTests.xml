@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="db.jdbc.QueryManagerTests" tests="5" skipped="0" failures="0" errors="0" timestamp="2021-11-14T09:49:16" hostname="LAPTOP-6QKOQ4EP" time="3.348">
+  <properties/>
+  <testcase name="getProductsAndOrgInPeriodTest" classname="db.jdbc.QueryManagerTests" time="1.019"/>
+  <testcase name="getQuantityAndSumByPeriodTest" classname="db.jdbc.QueryManagerTests" time="0.629"/>
+  <testcase name="get10ByProductsQuantityTest" classname="db.jdbc.QueryManagerTests" time="0.434"/>
+  <testcase name="getGetOrganisationsWithProductsORTest" classname="db.jdbc.QueryManagerTests" time="0.578"/>
+  <testcase name="getAvgPriceByPeriodTest" classname="db.jdbc.QueryManagerTests" time="0.686"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

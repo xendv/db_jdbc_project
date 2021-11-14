@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="db.jdbc.DAOTests" tests="7" skipped="0" failures="0" errors="0" timestamp="2021-11-14T09:49:09" hostname="LAPTOP-6QKOQ4EP" time="7.351">
+  <properties/>
+  <testcase name="saveInvoice" classname="db.jdbc.DAOTests" time="2.873"/>
+  <testcase name="getInvoiceById" classname="db.jdbc.DAOTests" time="0.765"/>
+  <testcase name="deleteNotExistingInvoice" classname="db.jdbc.DAOTests" time="0.622"/>
+  <testcase name="getAllInvoices" classname="db.jdbc.DAOTests" time="0.727"/>
+  <testcase name="updateInvoice" classname="db.jdbc.DAOTests" time="0.743"/>
+  <testcase name="getOrganizationByItn" classname="db.jdbc.DAOTests" time="0.89"/>
+  <testcase name="deleteInvoice" classname="db.jdbc.DAOTests" time="0.725"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
